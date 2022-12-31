@@ -1,0 +1,9 @@
+open-api:
+  host: https://openapi.openbanking.or.kr
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url:
+    username:
+    password:

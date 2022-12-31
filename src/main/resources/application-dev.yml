@@ -1,0 +1,10 @@
+open-api:
+  host: https://testapi.openbanking.or.kr
+  authorize-callback: http://localhost:${server.port}/auth/callback
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:53306/banking
+    username: root
+    password: root

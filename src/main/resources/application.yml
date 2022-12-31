@@ -1,0 +1,8 @@
+server:
+  port: 9999
+spring:
+  profiles:
+    active: dev
+
+open-api:
+  client_id: ${OPEN_API_CLIENT_ID}
