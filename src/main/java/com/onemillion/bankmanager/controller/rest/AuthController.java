@@ -3,10 +3,10 @@ package com.onemillion.bankmanager.controller.rest;
 import com.onemillion.bankmanager.model.dto.AuthCookie;
 import com.onemillion.bankmanager.model.dto.openapi.TokenResponse;
 import com.onemillion.bankmanager.model.dto.openapi.UserResponse;
-import com.onemillion.bankmanager.service.AccountService;
-import com.onemillion.bankmanager.service.AuthService;
+import com.onemillion.bankmanager.service.BankAccountService;
 import com.onemillion.bankmanager.service.OpenApiService;
 import com.onemillion.bankmanager.service.TokenService;
+import com.onemillion.bankmanager.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +21,8 @@ import java.io.IOException;
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
-    private final AccountService accountService;
-    private final AuthService authService;
+    private final BankAccountService bankAccountService;
+    private final UserService userService;
     private final TokenService tokenService;
     private final OpenApiService openApiService;
 
@@ -46,8 +46,8 @@ public class AuthController {
         // token -> get resource
         UserResponse userResponse = openApiService.getUserInfo(tokenResponse);
         // save resource
-        authService.syncUser(userResponse);
-        accountService.syncBankAccount(userResponse.getBankAccountList());
+        userService.syncUser(userResponse);
+        bankAccountService.syncBankAccount(tokenResponse.getUserSeqNo(), userResponse.getBankAccountList());
 
         // token -> encrypt and set cookie
         tokenService.setAccessToken(response,

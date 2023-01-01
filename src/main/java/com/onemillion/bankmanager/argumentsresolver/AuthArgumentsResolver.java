@@ -55,7 +55,7 @@ public class AuthArgumentsResolver implements HandlerMethodArgumentResolver {
                 throw new IllegalStateException("Access token owner and refresh token owner is different.");
             }
 
-            User user = userService.findUserBySeqNo(accessTokenCookie.getUserSeqNo());
+            User user = userService.getUser(accessTokenCookie.getUserSeqNo());
 
             builder.accessToken(accessTokenCookie.getToken())
                     .refreshToken(refreshTokenCookie.getToken())

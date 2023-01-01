@@ -5,13 +5,18 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
+
 @Getter
 @Setter
 @Entity
 public class User {
     @Id
-    private long uid;
+    private long id;
     private String userSeqNo;
     private String userCi;
     private String userName;
+
+    private Instant createDt;
+    private Instant updateDt;
 }
