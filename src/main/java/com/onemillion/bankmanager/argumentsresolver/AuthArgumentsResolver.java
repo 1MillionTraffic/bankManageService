@@ -4,7 +4,6 @@ import com.onemillion.bankmanager.interfaces.ParseAuth;
 import com.onemillion.bankmanager.model.dto.AuthCookie;
 import com.onemillion.bankmanager.model.dto.AuthResult;
 import com.onemillion.bankmanager.model.dto.UserDTO;
-import com.onemillion.bankmanager.model.entity.User;
 import com.onemillion.bankmanager.service.TokenService;
 import com.onemillion.bankmanager.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -55,15 +54,11 @@ public class AuthArgumentsResolver implements HandlerMethodArgumentResolver {
                 throw new IllegalStateException("Access token owner and refresh token owner is different.");
             }
 
-            User user = userService.getUser(accessTokenCookie.getUserSeqNo());
+            UserDTO user = userService.getUser(accessTokenCookie.getUserSeqNo());
 
             builder.accessToken(accessTokenCookie.getToken())
                     .refreshToken(refreshTokenCookie.getToken())
-                    .user(UserDTO.builder()
-                            .userCi(user.getUserCi())
-                            .userName(user.getUserName())
-                            .userSeqNo(user.getUserSeqNo())
-                            .build());
+                    .user(user);
         }
 
         return builder.build();

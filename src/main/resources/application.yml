@@ -1,6 +1,9 @@
 server:
   port: 9999
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
   profiles:
     active: dev
 

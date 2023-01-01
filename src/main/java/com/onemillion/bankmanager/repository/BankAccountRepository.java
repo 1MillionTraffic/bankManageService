@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface BankAccountRepository extends JpaRepository<BankAccount, Long> {
     List<BankAccount> findAllByUserSeqNo(String userSeqNo);
+    BankAccount findByFintechUseNum(String fintechUseNum);
 }

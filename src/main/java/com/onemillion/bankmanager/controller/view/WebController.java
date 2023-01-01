@@ -25,6 +25,7 @@ public class WebController {
         if(authResult.isLogin()) {
             List<BankAccountDTO> bankAccountList = bankAccountService.getBankAccount(authResult.getUser().getUserSeqNo());
             model.addAttribute("bankAccountList", bankAccountList);
+            model.addAttribute("user", authResult.getUser());
         }
 
         model.addAttribute("isLogin", authResult.isLogin());
