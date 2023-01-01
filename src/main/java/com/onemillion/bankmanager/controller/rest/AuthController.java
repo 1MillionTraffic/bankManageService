@@ -1,6 +1,7 @@
 package com.onemillion.bankmanager.controller.rest;
 
 import com.onemillion.bankmanager.model.dto.AuthCookie;
+import com.onemillion.bankmanager.model.dto.UserDTO;
 import com.onemillion.bankmanager.model.dto.openapi.TokenResponse;
 import com.onemillion.bankmanager.model.dto.openapi.UserResponse;
 import com.onemillion.bankmanager.service.BankAccountService;
@@ -46,7 +47,11 @@ public class AuthController {
         // token -> get resource
         UserResponse userResponse = openApiService.getUserInfo(tokenResponse);
         // save resource
-        userService.syncUser(userResponse);
+        userService.syncUser(UserDTO.builder()
+                .userSeqNo(userResponse.getUserSeqNo())
+                .userCi(userResponse.getUserCi())
+                .userName(userResponse.getUserName())
+                .build());
         bankAccountService.syncBankAccount(tokenResponse.getUserSeqNo(), userResponse.getBankAccountList());
 
         // token -> encrypt and set cookie
