@@ -30,7 +30,7 @@
         }
 
         nav {
-            height:20px;
+            height: 20px;
             display: flex;
             justify-content: space-between;
             align-items: baseline;
@@ -52,6 +52,44 @@
             text-align: center;
             color: #777777;
         }
+
+        .content {
+            padding: 30px;
+        }
+
+        .bank-info {
+            display: flex;
+            font-size: 12px;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .bank-info .type {
+            font-size: 10px;
+            background: #888;
+            color: #cecece;
+            padding: 1px 3px;
+            border-radius: 5px;
+        }
+
+        .bank-info .alias {
+            font-weight: bold;
+        }
+
+        .button-bank {
+            font-size: 14px;
+            background: #387fea;
+            border-radius: 5px;
+            padding: 2px 5px;
+            display: block;
+            margin: auto;
+            width: 25vw;
+        }
+
+        .button-bank a {
+            color: #ffffff;
+        }
+
     </style>
 </head>
 <body>
@@ -60,16 +98,33 @@
     <ul>
         <th:block th:if="${!isLogin}">
             <li>
-                <button>
-                    <a th:href="@{/api/auth/login}">로그인</a>
-                </button>
+                <a th:href="@{/api/auth/login}">로그인</a>
+            </li>
+        </th:block>
+        <th:block th:if="${isLogin}">
+            <li>
+                <p th:text="${user.getUserName()}">홍석현</p>
             </li>
         </th:block>
     </ul>
 </nav>
 <div>
     <th:block th:if="${isLogin}">
-        <div></div>
+        <div class="content">
+            <th:block th:if="${bankAccountList.size() == 0}">
+                <div class="login-alert">
+                    <div>계좌 등록을 진행해주세요.</div>
+                </div>
+            </th:block>
+            <div class="bank-info" th:each="bankAccount : ${bankAccountList}">
+                <span class="type" th:text="${bankAccount.getBankName() + bankAccount.getSavingsBankName()}">카카오</span>
+                <span class="alias" th:text="${bankAccount.getAccountAlias()}">카카오1</span>
+                <span class="num" th:text="${bankAccount.getAccountNumMasked()}">1234-****</span>
+            </div>
+            <button class="button-bank">
+                <a th:href="@{/api/auth/register}">계좌 등록하기</a>
+            </button>
+        </div>
     </th:block>
     <th:block th:if="${!isLogin}">
         <div class="login-alert">로그인을 진행해야 계좌 목록이 보입니다.</div>

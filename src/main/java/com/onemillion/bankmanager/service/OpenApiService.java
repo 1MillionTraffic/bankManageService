@@ -16,6 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class OpenApiService {
 
     private final static String LOGIN_PATH = "/oauth/2.0/authorize_account";
+    private final static String REGISTER_PATH = "/oauth/2.0/authorize";
     private final static String TOKEN_PATH = "/oauth/2.0/token";
     private final static String USER_ME_PATH = "/v2.0/user/me";
 
@@ -37,6 +38,20 @@ public class OpenApiService {
         return uriComponents.toString();
     }
 
+    public String getRegisterUrl(HttpServletRequest request) {
+        UriComponents uriComponents = getOpenApiUriComponents(REGISTER_PATH)
+                .queryParam("response_type", "code")
+                .queryParam("redirect_uri", openApiConfiguration.getAuthorizeCallbackUrl())
+                .queryParam("scope", "login inquiry")
+                .queryParam("state", "b80BLsfigm9OokPTjy03elbJqRHOfGSY") // TODO: CSRF 보안 대응
+                .queryParam("auth_type", 0)
+                .queryParam("lang", "kor")
+                .queryParam("cellphone_cert_yn", "Y")
+                .queryParam("authorized_cert_yn", "N")
+                .build();
+
+        return uriComponents.toString();
+    }
     public TokenResponse getLoginTokenResponse(String code) {
         UriComponents tokenUri = getOpenApiUriComponents(TOKEN_PATH)
                 .queryParam("client_secret", openApiConfiguration.getClientSecret())

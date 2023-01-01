@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @RequestMapping("/api/auth")
 @RestController
@@ -33,11 +34,22 @@ public class AuthController {
         response.sendRedirect(loginUrl);
     }
 
+    @GetMapping("/register")
+    public void register(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String registerUrl = openApiService.getRegisterUrl(request);
+        response.sendRedirect(registerUrl);
+    }
+
     @GetMapping("/callback")
     public void oauthCallback(@RequestParam(value = "client_info", required = false) String clientInfo,
-                              @RequestParam String code,
-                              @RequestParam String state,
+                              @RequestParam(required = false) String code,
+                              @RequestParam(required = false) String state,
+                              @RequestParam(required = false) String error,
                               HttpServletResponse response) throws Exception {
+        if(Objects.nonNull(error)) {
+            response.sendRedirect("/");
+            return;
+        }
 
         // TODO: csrf 검증
 
