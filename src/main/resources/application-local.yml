@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+
+open-api:
+  host: https://testapi.openbanking.or.kr
+  client-id: 2849097e-0c2d-49cc-ae87-e37226f8008e
+  client-secret: e1c71fce-5811-43dd-b70a-139f3b59f28d
+  authorize:
+    url: /oauth/2.0/authorize
+  token:
+    url: /oauth/2.0/token
+  account:
+    url: /oauth/2.0/authorize_account
