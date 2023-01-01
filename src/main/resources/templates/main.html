@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BankManager</title>
+    <style rel="stylesheet">
+        * {
+            margin: 0;
+            padding: 0;
+            color: #3c3c3c;
+        }
+
+        button {
+            background: inherit;
+            border: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            cursor: pointer;
+        }
+
+        a {
+            text-underline-mode: none;
+        }
+
+        #logo {
+            font-size: 16px;
+            color: #387fea;
+        }
+
+        nav {
+            height:20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px solid #ccc;
+            font-size: 12px;
+            padding: 5px;
+        }
+
+        nav ul {
+            list-style-type: none;
+        }
+
+        nav ul li {
+            cursor: pointer;
+        }
+
+        .login-alert {
+            margin-top: calc(40vh - 30px);
+            text-align: center;
+            color: #777777;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <div id="logo">BankManager</div>
+    <ul>
+        <th:block th:if="${!isLogin}">
+            <li>
+                <button>
+                    <a th:href="@{/api/auth/login}">로그인</a>
+                </button>
+            </li>
+        </th:block>
+    </ul>
+</nav>
+<div>
+    <th:block th:if="${isLogin}">
+        <div></div>
+    </th:block>
+    <th:block th:if="${!isLogin}">
+        <div class="login-alert">로그인을 진행해야 계좌 목록이 보입니다.</div>
+    </th:block>
+</div>
+</body>
+</html>
