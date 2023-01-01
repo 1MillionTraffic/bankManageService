@@ -10,10 +10,11 @@ public class AES256Util {
     public static String AES_ALGORITHM = "AES/CBC/PKCS5Padding";
 
     public static String encrypt(String text, String key) throws Exception {
+        key = key.substring(0, 16);
+
         Cipher cipher = Cipher.getInstance(AES_ALGORITHM);
         SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "AES");
-        String iv = key.substring(0, 16); // 16byte
-        IvParameterSpec ivParamSpec = new IvParameterSpec(iv.getBytes());
+        IvParameterSpec ivParamSpec = new IvParameterSpec(key.getBytes());
         cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivParamSpec);
 
         byte[] encrypted = cipher.doFinal(text.getBytes(StandardCharsets.UTF_8));
@@ -21,10 +22,11 @@ public class AES256Util {
     }
 
     public static String decrypt(String cipherText, String key) throws Exception {
+        key = key.substring(0, 16);
+
         Cipher cipher = Cipher.getInstance(AES_ALGORITHM);
         SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "AES");
-        String iv = key.substring(0, 16); // 16byte
-        IvParameterSpec ivParamSpec = new IvParameterSpec(iv.getBytes());
+        IvParameterSpec ivParamSpec = new IvParameterSpec(key.getBytes());
         cipher.init(Cipher.DECRYPT_MODE, keySpec, ivParamSpec);
 
         byte[] decodedBytes = Base64.getDecoder().decode(cipherText);

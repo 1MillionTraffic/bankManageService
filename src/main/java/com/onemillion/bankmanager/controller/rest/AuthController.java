@@ -1,7 +1,11 @@
 package com.onemillion.bankmanager.controller.rest;
 
+import com.onemillion.bankmanager.model.dto.openapi.TokenResponse;
+import com.onemillion.bankmanager.model.dto.openapi.UserResponse;
+import com.onemillion.bankmanager.service.AccountService;
 import com.onemillion.bankmanager.service.AuthService;
 import com.onemillion.bankmanager.service.OpenApiService;
+import com.onemillion.bankmanager.service.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +20,9 @@ import java.io.IOException;
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
+    private final AccountService accountService;
     private final AuthService authService;
+    private final TokenService tokenService;
     private final OpenApiService openApiService;
 
     @GetMapping("/login")
@@ -29,8 +35,22 @@ public class AuthController {
     public void oauthCallback(@RequestParam(value = "client_info", required = false) String clientInfo,
                               @RequestParam String code,
                               @RequestParam String state,
-                              @RequestParam String scope,
-                              HttpServletResponse response) throws IOException {
+                              HttpServletResponse response) throws Exception {
+
+        // TODO: csrf 검증
+
+        // code -> token 변환
+        TokenResponse tokenResponse = openApiService.getLoginTokenResponse(code);
+
+        // token -> get resource
+        UserResponse userResponse = openApiService.getUserInfo(tokenResponse);
+        // save resource
+        authService.syncUser(userResponse);
+        accountService.syncBankAccount(userResponse.getBankAccountList());
+
+        // token -> encrypt and set cookie
+        tokenService.setAccessToken(response, tokenResponse.getAccessToken());
+        tokenService.setRefreshToken(response, tokenResponse.getRefreshToken());
 
         response.sendRedirect("/");
     }

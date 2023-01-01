@@ -15,6 +15,9 @@ public class WebController {
 
     @GetMapping
     public String mainPage(Model model, @ParseAuth(required = false) AuthResult authResult) {
+
+        // if login -> 계좌 목록 조회
+
         model.addAttribute("isLogin", authResult.isLogin());
         return "main";
     }
