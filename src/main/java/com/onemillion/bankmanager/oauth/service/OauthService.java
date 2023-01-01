@@ -3,6 +3,7 @@ package com.onemillion.bankmanager.oauth.service;
 
 import com.onemillion.bankmanager.config.OpenApiConfig;
 import com.onemillion.bankmanager.config.URL;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -16,15 +17,24 @@ public class OauthService {
     private final OpenApiConfig openApiConfig;
     private final WebClient webClient;
 
+    @Autowired
     public OauthService(OpenApiConfig openApiConfig, WebClient webClient) {
         this.openApiConfig = openApiConfig;
         this.webClient = webClient;
     }
 
+    public void info(){
+        System.out.println(openApiConfig.getHost());
+        System.out.println(openApiConfig.getClientId());
+        System.out.println(openApiConfig.getClientSecret());
+        System.out.println(openApiConfig.getTokenUrl());
+        System.out.println(openApiConfig.getAuthorizeUrl());
+    }
+
     public void getToken(String code){
         Map<String, String> request = new HashMap<>();
         request.put("code", code);
-        request.put("client_id", "2849097e-0c2d-49cc-ae87-e37226f8008e");
+        request.put("client_id", openApiConfig.getClientId());
         request.put("client_secret", "e1c71fce-5811-43dd-b70a-139f3b59f28d");
         request.put("redirect_uri", URL.AUTHORIZE_CALLBACK_URL.getValue());
         request.put("grant_type", "authorization_code");
@@ -38,7 +48,7 @@ public class OauthService {
         response.put("user_seq_no", null);
         response = WebClient.create().post()
 //                .uri("https://openapi.openbanking.or.kr/oauth/2.0/token")
-                .uri("https://testapi.openbanking.or.kr/oauth/2.0/token")
+                .uri(openApiConfig.getHost()+openApiConfig.getTokenUrl())
                 .body(Mono.just(request), request.getClass())
                 .retrieve()
                 .bodyToMono(response.getClass())
