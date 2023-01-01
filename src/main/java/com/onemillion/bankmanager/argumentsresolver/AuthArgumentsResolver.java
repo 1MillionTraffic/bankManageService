@@ -1,8 +1,12 @@
 package com.onemillion.bankmanager.argumentsresolver;
 
 import com.onemillion.bankmanager.interfaces.ParseAuth;
+import com.onemillion.bankmanager.model.dto.AuthCookie;
 import com.onemillion.bankmanager.model.dto.AuthResult;
+import com.onemillion.bankmanager.model.dto.UserDTO;
+import com.onemillion.bankmanager.model.entity.User;
 import com.onemillion.bankmanager.service.TokenService;
+import com.onemillion.bankmanager.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -18,6 +22,7 @@ import java.util.Objects;
 @Component
 public class AuthArgumentsResolver implements HandlerMethodArgumentResolver {
     private final TokenService tokenService;
+    private final UserService userService;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -28,22 +33,39 @@ public class AuthArgumentsResolver implements HandlerMethodArgumentResolver {
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         ParseAuth parseAuth = parameter.getParameterAnnotation(ParseAuth.class);
-        assert parseAuth != null;
+        if (Objects.isNull(parseAuth)) {
+            throw new IllegalArgumentException("ParseAuth annotation is not existed.");
+        }
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
 
-        String accessToken = tokenService.getAccessToken(request);
-        String refreshToken = tokenService.getRefreshToken(request);
+        AuthResult.AuthResultBuilder builder = AuthResult.builder();
 
-        boolean isLogin = Objects.nonNull(accessToken) && Objects.nonNull(refreshToken);
+        AuthCookie accessTokenCookie = tokenService.getAccessToken(request);
+        AuthCookie refreshTokenCookie = tokenService.getRefreshToken(request);
 
-        if(parseAuth.required()) {
-            throw new IllegalArgumentException("UNAUTHORIZED"); // TODO: Exception Resolver 생성
+        boolean isLogin = Objects.nonNull(accessTokenCookie) && Objects.nonNull(refreshTokenCookie);
+        builder.isLogin(isLogin);
+
+        if (!isLogin && parseAuth.required()) {
+            throw new IllegalStateException("UNAUTHORIZED"); // TODO: Exception Resolver 생성
         }
 
-        return AuthResult.builder()
-                .isLogin(isLogin)
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
+        if (isLogin) {
+            if (!accessTokenCookie.getUserSeqNo().equals(refreshTokenCookie.getUserSeqNo())) {
+                throw new IllegalStateException("Access token owner and refresh token owner is different.");
+            }
+
+            User user = userService.findUserBySeqNo(accessTokenCookie.getUserSeqNo());
+
+            builder.accessToken(accessTokenCookie.getToken())
+                    .refreshToken(refreshTokenCookie.getToken())
+                    .user(UserDTO.builder()
+                            .userCi(user.getUserCi())
+                            .userName(user.getUserName())
+                            .userSeqNo(user.getUserSeqNo())
+                            .build());
+        }
+
+        return builder.build();
     }
 }

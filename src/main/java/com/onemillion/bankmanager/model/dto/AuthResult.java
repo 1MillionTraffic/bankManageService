@@ -9,4 +9,6 @@ public class AuthResult {
     private final boolean isLogin;
     private final String accessToken;
     private final String refreshToken;
+
+    private final UserDTO user;
 }
