@@ -7,8 +7,4 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService {
 
-    public String getLoginUrl() {
-        return "";
-    }
-
 }

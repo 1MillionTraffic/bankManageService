@@ -1,5 +1,5 @@
 open-api:
-  host: https://openapi.openbanking.or.kr
+  host: openapi.openbanking.or.kr
   authorize-callback-url:
 
 spring:
