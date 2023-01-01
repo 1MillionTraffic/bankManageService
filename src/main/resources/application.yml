@@ -5,4 +5,6 @@ spring:
     active: dev
 
 open-api:
-  client_id: ${OPEN_API_CLIENT_ID}
+  client-id: ${OPEN_API_CLIENT_ID}
+  client-secret: ${OPEN_API_CLIENT_SECRET}
+

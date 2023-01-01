@@ -1,6 +1,6 @@
 open-api:
   host: https://testapi.openbanking.or.kr
-  authorize-callback: http://localhost:${server.port}/auth/callback
+  authorize-callback-url: http://localhost:${server.port}/auth/callback
 
 spring:
   datasource:
