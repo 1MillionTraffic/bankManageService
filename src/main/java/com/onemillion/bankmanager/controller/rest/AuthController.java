@@ -22,13 +22,6 @@ public class AuthController {
         response.sendRedirect(loginUrl);
     }
 
-    @GetMapping("/register")
-    public void register(HttpServletResponse response) throws IOException {
-        String registerUrl = authService.getRegisterUrl();
-        response.sendRedirect(registerUrl);
-
-    }
-
     @GetMapping("/callback")
     public void oauthCallback(@RequestParam("client_info") String clientInfo,
                               @RequestParam String code,

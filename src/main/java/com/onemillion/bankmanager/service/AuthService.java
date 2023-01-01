@@ -11,7 +11,4 @@ public class AuthService {
         return "";
     }
 
-    public String getRegisterUrl() {
-        return "";
-    }
 }
