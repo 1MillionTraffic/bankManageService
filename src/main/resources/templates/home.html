@@ -7,28 +7,16 @@
 </head>
 <body>
 <nav>
-  <div>BankManager</div>
-  <ul>
-    <th:block th:if="${!isLogin}">
-      <button th:onclick=
-                      "window.open(
-                      'https://testapi.openbanking.or.kr/oauth/2.0/authorize'
-                      +'?response_type=code'
-                      +'&client_id=2849097e-0c2d-49cc-ae87-e37226f8008e'
-                      +'&redirect_uri=http://localhost:8080/api/oauth/callback'
-                      +'&scope=login inquiry'
-                      +'&state=12345678901234567890123456789012'
-                      +'&auth_type=0')">Login</button>
-    </th:block>
-<!--    <button th:onclick="getToken()">getToken</button>-->
-  </ul>
+    <div>BankManager</div>
+    <ul>
+        <th:block th:if="${!isLogin}">
+            <button>
+                <a th:href="@{/api/oauth/login}">Login</a>
+            </button>
+        </th:block>
+        <th:block th:if="${isLogin}"></th:block>
+    </ul>
 </nav>
 
 </body>
-<!--<script>-->
-<!--    const getToken = () => {-->
-<!--        const code = "qwGJ1XEQLUtZC0Nox31ATmCfjUlhk6";-->
-<!--        axios.post("http://localhost:8080/api/oauth/token?code="+code);-->
-<!--    }-->
-<!--</script>-->
 </html>

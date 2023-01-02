@@ -1,5 +1,7 @@
 package com.onemillion.bankmanager.controller;
 
+import com.onemillion.bankmanager.dto.AuthUser;
+import com.onemillion.bankmanager.dto.CurrentUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

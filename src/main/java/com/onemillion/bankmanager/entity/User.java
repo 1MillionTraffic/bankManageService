@@ -1,4 +1,4 @@
-package com.onemillion.bankmanager.user;
+package com.onemillion.bankmanager.entity;
 
 
 public class User {
