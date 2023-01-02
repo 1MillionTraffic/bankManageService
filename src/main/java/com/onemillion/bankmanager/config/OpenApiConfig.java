@@ -25,4 +25,6 @@ public class OpenApiConfig {
     private String tokenUrl;
     @Value("${open-api.account.url}")
     private String accountUrl;
+    @Value("${open-api.user.url}")
+    private String userUrl;
 }

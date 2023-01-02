@@ -2,7 +2,14 @@ package com.onemillion.bankmanager.dto.response;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+
+@Getter
+@Setter
+@ToString
 public class TokenResponseDto {
     @JsonProperty("access_token")
     private String accessToken;
@@ -27,83 +34,5 @@ public class TokenResponseDto {
 
 
     public TokenResponseDto() {
-    }
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
-    public String getTokenType() {
-        return tokenType;
-    }
-
-    public int getExpiresIn() {
-        return expiresIn;
-    }
-
-    public String getScope() {
-        return scope;
-    }
-
-    public String getUserSeqNo() {
-        return userSeqNo;
-    }
-
-    public String getRspCode() {
-        return rspCode;
-    }
-
-    public String getRspMessage() {
-        return rspMessage;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
-    public void setTokenType(String tokenType) {
-        this.tokenType = tokenType;
-    }
-
-    public void setExpiresIn(int expiresIn) {
-        this.expiresIn = expiresIn;
-    }
-
-    public void setScope(String scope) {
-        this.scope = scope;
-    }
-
-    public void setUserSeqNo(String userSeqNo) {
-        this.userSeqNo = userSeqNo;
-    }
-
-    public void setRspCode(String rspCode) {
-        this.rspCode = rspCode;
-    }
-
-    public void setRspMessage(String rspMessage) {
-        this.rspMessage = rspMessage;
-    }
-
-    @Override
-    public String toString() {
-        return "TokenResponseDto{" +
-                "accessToken='" + accessToken + '\'' +
-                ", refreshToken='" + refreshToken + '\'' +
-                ", tokenType='" + tokenType + '\'' +
-                ", expiresIn=" + expiresIn +
-                ", scope='" + scope + '\'' +
-                ", userSeqNo='" + userSeqNo + '\'' +
-                ", rspCode='" + rspCode + '\'' +
-                ", rspMessage='" + rspMessage + '\'' +
-                '}';
     }
 }

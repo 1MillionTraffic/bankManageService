@@ -4,6 +4,7 @@ package com.onemillion.bankmanager.service;
 import com.onemillion.bankmanager.config.OpenApiConfig;
 import com.onemillion.bankmanager.config.URL;
 import com.onemillion.bankmanager.dto.response.TokenResponseDto;
+import com.onemillion.bankmanager.dto.response.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -55,6 +56,26 @@ public class OauthService {
                 .queryParam("redirect_uri", URL.AUTHORIZE_CALLBACK_URL.getValue())
                 .queryParam("grant_type", "authorization_code")
                 .queryParam("code", code)
+                .build()
+                .toUri();
+    }
+
+    public UserResponseDto getUser(TokenResponseDto token){
+        return webClient.get()
+                .uri(getUserUri(token))
+                .header("Authorization", "Bearer "+token.getAccessToken())
+                .retrieve()
+                .bodyToMono(UserResponseDto.class)
+                .block();
+    }
+
+    private URI getUserUri(TokenResponseDto token){
+        return UriComponentsBuilder.newInstance()
+                .scheme("https")
+                .host(openApiConfig.getHost())
+                .path(openApiConfig.getUserUrl())
+                .queryParam("client_id", openApiConfig.getClientId())
+                .queryParam("user_seq_no", token.getUserSeqNo())
                 .build()
                 .toUri();
     }
